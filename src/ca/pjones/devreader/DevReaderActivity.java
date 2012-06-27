@@ -1,9 +1,14 @@
 package ca.pjones.devreader;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,15 +22,36 @@ import ca.pjones.devreader.models.Result;
 
 public class DevReaderActivity extends ListActivity {
 	LinksRoot lr;
-	String JSONURL = "http://devreader.herokuapp.com/";
+	String JSONURL = "http://devreader.herokuapp.com";
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadJSON(JSONURL);
+        generate(JSONURL);
+    }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	generate(JSONURL);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+      String newRoot = lr.results[position].link;
+      generate(JSONURL + newRoot);
+
+      super.onListItemClick(l, v, position, id);
+    }
+    
+    private void generate(String url) {
+        loadJSON(url);
         String[] titles = extractTitles(lr);
-        setUpList(titles);
+        setUpList(titles);	
     }
     
     private void setUpList(String[] elements) {
