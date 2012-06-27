@@ -25,8 +25,12 @@ public class DevReaderActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         loadJSON(JSONURL);
         String[] titles = extractTitles(lr);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, titles);
+        setUpList(titles);
+    }
+    
+    private void setUpList(String[] elements) {
+    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, elements);
         setListAdapter(adapter);
     }
     
