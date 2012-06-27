@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -43,7 +44,15 @@ public class DevReaderActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
       String newRoot = lr.results[position].link;
-      generate(JSONURL + newRoot);
+      if( newRoot.startsWith("/") ) {
+    	  generate(JSONURL + newRoot);
+      } else { 
+    	  Bundle b = new Bundle();
+    	  b.putString("link", lr.results[position].link);
+    	  Intent i = new Intent(DevReaderActivity.this, PageView.class);
+    	  i.putExtras(b);
+    	  startActivity(i);
+      }
 
       super.onListItemClick(l, v, position, id);
     }
@@ -67,7 +76,7 @@ public class DevReaderActivity extends ListActivity {
         	lr = new Gson().fromJson(reader, LinksRoot.class);
         }
         catch(Exception e) { e.printStackTrace(); }
-    }
+    };
     
     private String[] extractTitles(LinksRoot l) {
     	String[] ret = new String[l.results.length];
