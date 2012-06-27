@@ -11,6 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="206dp"
         android:text="devReader"
+        android:clickable="true"
         android:onClick="launchApp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
