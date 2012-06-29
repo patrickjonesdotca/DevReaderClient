@@ -1,11 +1,19 @@
 package ca.pjones.devreader;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 public class PageView extends Activity {
+	String location;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -14,13 +22,38 @@ public class PageView extends Activity {
         
         WebSettings webSettings = wr.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        //webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(false);
         webSettings.setBuiltInZoomControls(true);
         
         Bundle b = getIntent().getExtras();
-        String location = b.getString("link");
+        location = b.getString("link");
         wr.loadUrl(location);
     }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.layout.menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+ 
+        switch (item.getItemId())
+        {
+
+        case R.id.menu_share:
+        	Intent intent = new Intent(Intent.ACTION_SEND);
+        	intent.setType("text/plain");
+        	intent.putExtra(Intent.EXTRA_TEXT, location);
+        	startActivity(Intent.createChooser(intent, "Share with"));
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }  
 
 }
