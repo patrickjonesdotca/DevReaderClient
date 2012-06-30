@@ -2,14 +2,13 @@ package ca.pjones.devreader;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 public class PageView extends Activity {
 	String location;
@@ -24,6 +23,9 @@ public class PageView extends Activity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setUseWideViewPort(false);
         webSettings.setBuiltInZoomControls(true);
+        webSettings.setRenderPriority(RenderPriority.HIGH);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        
         
         Bundle b = getIntent().getExtras();
         location = b.getString("link");
